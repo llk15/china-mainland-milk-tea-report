@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="汇集中国大陆奶茶品牌公开检验报告，提供饮品营养数据筛选、排序与原始报告查阅。">
+    <meta name="theme-color" content="#173d32">
+    <title>中国大陆奶茶报告</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="返回首页">
+        <span class="brand-mark" aria-hidden="true">茶</span>
+        <span>中国大陆奶茶报告</span>
+      </a>
+      <nav aria-label="主要导航">
+        <a href="#explore">浏览数据</a>
+        <a href="data/chagee/chagee_drinks.csv" download>下载 CSV</a>
+        <a href="https://github.com/llk15/china-mainland-milk-tea-report">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">PUBLIC MILK TEA REPORTS · CHINA</p>
+          <h1 id="hero-title">把公开检验报告，<br><em>变成可比较的数据。</em></h1>
+          <p class="hero-intro">
+            汇集奶茶品牌公开发布的检验报告与营养信息，让每一种杯型、糖度和温度都能被筛选、排序和追溯。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#explore">开始浏览</a>
+            <a class="button button-secondary" href="data/chagee/chagee_nutrition.xlsx" download>下载 Excel</a>
+          </div>
+        </div>
+
+        <div class="hero-card" aria-label="当前收录概览">
+          <div class="hero-card-top">
+            <span>首批收录</span>
+            <span class="live-dot">数据已公开</span>
+          </div>
+          <strong>霸王茶姬</strong>
+          <div class="hero-card-grid">
+            <div><span id="hero-products">—</span><small>款饮品</small></div>
+            <div><span id="hero-records">—</span><small>种规格</small></div>
+            <div><span id="hero-reports">—</span><small>份报告索引</small></div>
+          </div>
+          <p>每条记录尽可能链接至品牌公开的原始检验报告。</p>
+        </div>
+      </section>
+
+      <section class="manifesto" aria-label="项目特点">
+        <div><span>01</span><strong>公开来源</strong><p>聚合品牌已公开的信息，不替代原始报告。</p></div>
+        <div><span>02</span><strong>规格可比</strong><p>按杯型、温度、糖度拆分，避免只看产品均值。</p></div>
+        <div><span>03</span><strong>原文可追</strong><p>从数据记录直接前往对应检验报告。</p></div>
+      </section>
+
+      <section class="explorer" id="explore" aria-labelledby="explorer-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">EXPLORE THE DATA</p>
+            <h2 id="explorer-title">筛一杯更适合你的茶</h2>
+          </div>
+          <p id="last-updated">正在读取数据…</p>
+        </div>
+
+        <form class="filters" id="filter-form">
+          <label class="search-field">
+            <span>搜索饮品</span>
+            <span class="input-wrap">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.4A7.75 7.75 0 1 1 3.5 11.25a7.75 7.75 0 0 1 15.5 0Z"/></svg>
+              <input id="search" type="search" placeholder="例如：伯牙绝弦" autocomplete="off">
+            </span>
+          </label>
+          <label>
+            <span>品类</span>
+            <select id="category"><option value="">全部品类</option></select>
+          </label>
+          <label>
+            <span>营养等级</span>
+            <select id="grade">
+              <option value="">全部等级</option>
+              <option value="A">A级</option>
+              <option value="B">B级</option>
+              <option value="C">C级</option>
+              <option value="D">D级</option>
+            </select>
+          </label>
+          <label>
+            <span>杯型</span>
+            <select id="cup"><option value="">全部杯型</option></select>
+          </label>
+          <label>
+            <span>温度</span>
+            <select id="temperature"><option value="">全部温度</option></select>
+          </label>
+          <label>
+            <span>糖度</span>
+            <select id="sweetness"><option value="">全部糖度</option></select>
+          </label>
+          <label class="check-field">
+            <input id="report-only" type="checkbox">
+            <span>仅看有原始报告的记录</span>
+          </label>
+          <button class="text-button" id="reset-filters" type="reset">清除筛选</button>
+        </form>
+
+        <div class="result-toolbar">
+          <p id="result-copy" aria-live="polite">正在加载…</p>
+          <label class="sort-field">
+            <span>排序</span>
+            <select id="sort">
+              <option value="energy-asc">热量从低到高</option>
+              <option value="energy-desc">热量从高到低</option>
+              <option value="caffeine-asc">咖啡因从低到高</option>
+              <option value="caffeine-desc">咖啡因从高到低</option>
+              <option value="protein-desc">蛋白质从高到低</option>
+              <option value="polyphenols-desc">茶多酚从高到低</option>
+              <option value="carbs-asc">碳水从低到高</option>
+              <option value="grade-asc">营养等级从 A 到 D</option>
+              <option value="name-asc">饮品名称</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="summary-grid" aria-label="当前筛选结果概览">
+          <article><span>规格记录</span><strong id="stat-records">—</strong></article>
+          <article><span>涉及饮品</span><strong id="stat-products">—</strong></article>
+          <article><span>平均热量</span><strong id="stat-energy">—</strong><small>kcal / 杯</small></article>
+          <article><span>报告覆盖</span><strong id="stat-coverage">—</strong></article>
+        </div>
+
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">饮品与规格</th>
+                <th scope="col">热量<small>kcal</small></th>
+                <th scope="col">蛋白质<small>g</small></th>
+                <th scope="col">碳水<small>g</small></th>
+                <th scope="col">脂肪<small>g</small></th>
+                <th scope="col">咖啡因<small>mg</small></th>
+                <th scope="col">茶多酚<small>mg</small></th>
+                <th scope="col">等级</th>
+                <th scope="col">来源</th>
+              </tr>
+            </thead>
+            <tbody id="results">
+              <tr><td class="loading-cell" colspan="9">正在整理茶单，请稍候…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="load-more-wrap">
+          <button class="button button-secondary" id="load-more" type="button" hidden>显示更多</button>
+        </div>
+
+        <aside class="notice">
+          <strong>如何阅读这些数据？</strong>
+          <p>
+            同一饮品因杯型、温度和糖度不同，营养值可能差异明显。页面展示品牌公开数据并链接原始报告，
+            不构成医疗或营养建议；如页面与原始报告不一致，请以原始报告为准。
+          </p>
+        </aside>
+      </section>
+    </main>
+
+    <footer>
+      <p>中国大陆奶茶报告 · 让公开信息更容易被看见和比较</p>
+      <div>
+        <a href="data/chagee/chagee_drinks.csv" download>CSV 数据</a>
+        <a href="data/chagee/chagee_nutrition.xlsx" download>Excel 数据</a>
+        <a href="https://github.com/llk15/china-mainland-milk-tea-report">项目仓库</a>
+      </div>
+    </footer>
+
+    <dialog id="detail-dialog">
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="关闭">×</button>
+      <p class="eyebrow" id="dialog-category"></p>
+      <h2 id="dialog-title"></h2>
+      <div class="dialog-specs" id="dialog-specs"></div>
+      <div class="dialog-nutrition" id="dialog-nutrition"></div>
+      <a class="button button-primary" id="dialog-report" target="_blank" rel="noopener noreferrer">查看原始检验报告</a>
+    </dialog>
+
+    <noscript>需要启用 JavaScript 才能筛选和排序数据；你也可以直接下载 CSV 或 Excel 文件。</noscript>
+  </body>
+</html>
