@@ -109,20 +109,7 @@
 
         <div class="result-toolbar">
           <p id="result-copy" aria-live="polite">正在加载…</p>
-          <label class="sort-field">
-            <span>排序</span>
-            <select id="sort">
-              <option value="energy-asc">热量从低到高</option>
-              <option value="energy-desc">热量从高到低</option>
-              <option value="caffeine-asc">咖啡因从低到高</option>
-              <option value="caffeine-desc">咖啡因从高到低</option>
-              <option value="protein-desc">蛋白质从高到低</option>
-              <option value="polyphenols-desc">茶多酚从高到低</option>
-              <option value="carbs-asc">碳水从低到高</option>
-              <option value="grade-asc">营养等级从 A 到 D</option>
-              <option value="name-asc">饮品名称</option>
-            </select>
-          </label>
+          <p class="sort-hint">点击表头即可排序，再次点击切换方向</p>
         </div>
 
         <div class="summary-grid" aria-label="当前筛选结果概览">
@@ -136,14 +123,46 @@
           <table>
             <thead>
               <tr>
-                <th scope="col">饮品与规格</th>
-                <th scope="col">热量<small>kcal</small></th>
-                <th scope="col">蛋白质<small>g</small></th>
-                <th scope="col">碳水<small>g</small></th>
-                <th scope="col">脂肪<small>g</small></th>
-                <th scope="col">咖啡因<small>mg</small></th>
-                <th scope="col">茶多酚<small>mg</small></th>
-                <th scope="col">等级</th>
+                <th scope="col" aria-sort="none">
+                  <button class="sort-button" type="button" data-sort="name">
+                    <span>饮品与规格</span><span class="sort-indicator" aria-hidden="true">↕</span>
+                  </button>
+                </th>
+                <th scope="col" aria-sort="ascending">
+                  <button class="sort-button is-active" type="button" data-sort="energy">
+                    <span>热量<small>kcal</small></span><span class="sort-indicator" aria-hidden="true">↑</span>
+                  </button>
+                </th>
+                <th scope="col" aria-sort="none">
+                  <button class="sort-button" type="button" data-sort="protein">
+                    <span>蛋白质<small>g</small></span><span class="sort-indicator" aria-hidden="true">↕</span>
+                  </button>
+                </th>
+                <th scope="col" aria-sort="none">
+                  <button class="sort-button" type="button" data-sort="carbs">
+                    <span>碳水<small>g</small></span><span class="sort-indicator" aria-hidden="true">↕</span>
+                  </button>
+                </th>
+                <th scope="col" aria-sort="none">
+                  <button class="sort-button" type="button" data-sort="fat">
+                    <span>脂肪<small>g</small></span><span class="sort-indicator" aria-hidden="true">↕</span>
+                  </button>
+                </th>
+                <th scope="col" aria-sort="none">
+                  <button class="sort-button" type="button" data-sort="caffeine">
+                    <span>咖啡因<small>mg</small></span><span class="sort-indicator" aria-hidden="true">↕</span>
+                  </button>
+                </th>
+                <th scope="col" aria-sort="none">
+                  <button class="sort-button" type="button" data-sort="polyphenols">
+                    <span>茶多酚<small>mg</small></span><span class="sort-indicator" aria-hidden="true">↕</span>
+                  </button>
+                </th>
+                <th scope="col" aria-sort="none">
+                  <button class="sort-button" type="button" data-sort="grade">
+                    <span>等级</span><span class="sort-indicator" aria-hidden="true">↕</span>
+                  </button>
+                </th>
                 <th scope="col">来源</th>
               </tr>
             </thead>
@@ -182,7 +201,7 @@
       <h2 id="dialog-title"></h2>
       <div class="dialog-specs" id="dialog-specs"></div>
       <div class="dialog-nutrition" id="dialog-nutrition"></div>
-      <a class="button button-primary" id="dialog-report" target="_blank" rel="noopener noreferrer">查看原始检验报告</a>
+      <a class="button button-primary" id="dialog-report" target="_blank" rel="noopener noreferrer">在网页中查看报告</a>
     </dialog>
 
     <noscript>需要启用 JavaScript 才能筛选和排序数据；你也可以直接下载 CSV 或 Excel 文件。</noscript>

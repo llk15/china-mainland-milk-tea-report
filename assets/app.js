@@ -5,6 +5,8 @@ const state = {
   records: [],
   filtered: [],
   visible: PAGE_SIZE,
+  sortKey: "energy",
+  sortDirection: "asc",
 };
 
 const elements = {
@@ -16,7 +18,7 @@ const elements = {
   temperature: document.querySelector("#temperature"),
   sweetness: document.querySelector("#sweetness"),
   reportOnly: document.querySelector("#report-only"),
-  sort: document.querySelector("#sort"),
+  sortButtons: document.querySelectorAll(".sort-button"),
   results: document.querySelector("#results"),
   resultCopy: document.querySelector("#result-copy"),
   loadMore: document.querySelector("#load-more"),
@@ -90,18 +92,32 @@ function compareNullable(left, right, direction = 1) {
 }
 
 function sortRecords(records) {
-  const [key, direction] = elements.sort.value.split("-");
-  const factor = direction === "desc" ? -1 : 1;
+  const key = state.sortKey;
+  const factor = state.sortDirection === "desc" ? -1 : 1;
   return records.sort((a, b) => {
     let result;
     if (key === "name") {
-      result = a.name.localeCompare(b.name, "zh-CN");
+      result = a.name.localeCompare(b.name, "zh-CN") * factor;
     } else if (key === "grade") {
-      result = (gradeOrder[a.grade] ?? 9) - (gradeOrder[b.grade] ?? 9);
+      result = ((gradeOrder[a.grade] ?? 9) - (gradeOrder[b.grade] ?? 9)) * factor;
     } else {
       result = compareNullable(a[key], b[key], factor);
     }
     return result || a.name.localeCompare(b.name, "zh-CN");
+  });
+}
+
+function updateSortIndicators() {
+  elements.sortButtons.forEach((button) => {
+    const active = button.dataset.sort === state.sortKey;
+    const header = button.closest("th");
+    const indicator = button.querySelector(".sort-indicator");
+    button.classList.toggle("is-active", active);
+    header.setAttribute(
+      "aria-sort",
+      active ? (state.sortDirection === "asc" ? "ascending" : "descending") : "none",
+    );
+    indicator.textContent = active ? (state.sortDirection === "asc" ? "↑" : "↓") : "↕";
   });
 }
 
@@ -155,11 +171,21 @@ function specTags(record) {
     .join("");
 }
 
+function reportViewerURL(record) {
+  const specs = [record.cup, record.temperature, record.sweetness].filter(Boolean).join(" · ");
+  const params = new URLSearchParams({
+    url: record.report,
+    name: record.name,
+    specs,
+  });
+  return `report.html?${params.toString()}`;
+}
+
 function recordRow(record, index) {
   const grade = record.grade || "—";
   const gradeClass = record.grade ? `grade-${record.grade.toLowerCase()}` : "grade-none";
   const report = record.report
-    ? `<a class="report-link" href="${escapeHTML(record.report)}" target="_blank" rel="noopener noreferrer">报告</a>`
+    ? `<a class="report-link" href="${escapeHTML(reportViewerURL(record))}" target="_blank" rel="noopener noreferrer">报告</a>`
     : `<span aria-label="暂无报告">—</span>`;
 
   return `
@@ -220,14 +246,26 @@ function openDetail(record) {
   ].join("");
 
   elements.dialogReport.hidden = !record.report;
-  if (record.report) elements.dialogReport.href = record.report;
+  if (record.report) elements.dialogReport.href = reportViewerURL(record);
   elements.dialog.showModal();
 }
 
 function bindEvents() {
   elements.form.addEventListener("input", applyFilters);
   elements.form.addEventListener("reset", () => window.setTimeout(applyFilters));
-  elements.sort.addEventListener("change", applyFilters);
+  elements.sortButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const key = button.dataset.sort;
+      if (state.sortKey === key) {
+        state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc";
+      } else {
+        state.sortKey = key;
+        state.sortDirection = "asc";
+      }
+      updateSortIndicators();
+      applyFilters();
+    });
+  });
   elements.loadMore.addEventListener("click", () => {
     state.visible += PAGE_SIZE;
     renderRows();

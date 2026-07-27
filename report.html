@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在线查看奶茶品牌公开检验报告。">
+    <meta name="theme-color" content="#173d32">
+    <title>检验报告 · 中国大陆奶茶报告</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <script src="assets/report.js" defer></script>
+  </head>
+  <body class="report-page">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">茶</span>
+        <span>中国大陆奶茶报告</span>
+      </a>
+      <nav aria-label="报告页导航">
+        <a href="index.html#explore">返回数据浏览</a>
+        <a href="https://github.com/llk15/china-mainland-milk-tea-report">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="report-main">
+      <div class="report-heading">
+        <div>
+          <p class="eyebrow">PUBLIC TEST REPORT</p>
+          <h1 id="report-title">检验报告</h1>
+          <p id="report-specs">正在读取报告信息…</p>
+        </div>
+        <a class="button button-secondary" id="original-report" target="_blank" rel="noopener noreferrer" hidden>
+          打开品牌原始地址
+        </a>
+      </div>
+
+      <section class="report-viewer" aria-live="polite">
+        <div class="report-loading" id="report-loading">正在载入原始报告…</div>
+        <img id="report-image" alt="" hidden>
+        <iframe id="report-pdf" title="检验报告 PDF" hidden></iframe>
+        <div class="report-error" id="report-error" hidden>
+          <strong>暂时无法显示这份报告</strong>
+          <p>报告地址可能已经更新或限制了网页展示。你可以尝试打开品牌原始地址。</p>
+        </div>
+      </section>
+
+      <aside class="report-note">
+        本页仅用于展示品牌公开发布的原始检验报告，不修改报告内容。若展示内容与品牌最新页面不一致，请以品牌原始页面为准。
+      </aside>
+    </main>
+  </body>
+</html>
