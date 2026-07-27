@@ -77,16 +77,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=root / "data/chagee/chagee_drinks.csv")
     parser.add_argument("--output", type=Path, default=root / "data/chagee/chagee_drinks.json")
+    parser.add_argument("--script-output", type=Path, default=root / "data/chagee/chagee_drinks.js")
     args = parser.parse_args()
 
     payload = build(args.source)
+    payload_text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+    args.output.write_text(payload_text, encoding="utf-8")
+    args.script_output.write_text(
+        f"window.CHAGEE_DATA={payload_text};\n",
         encoding="utf-8",
     )
     print(
-        f"已生成 {args.output}："
+        f"已生成 {args.output} 和 {args.script_output}："
         f"{payload['meta']['records']} 条规格，{payload['meta']['products']} 款饮品"
     )
     return 0

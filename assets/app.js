@@ -43,12 +43,12 @@ const countFormat = new Intl.NumberFormat("zh-CN");
 const gradeOrder = { A: 1, B: 2, C: 3, D: 4, "": 9 };
 
 function escapeHTML(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(value === null || value === undefined ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function valueOrDash(value) {
@@ -282,9 +282,12 @@ function bindEvents() {
 
 async function init() {
   try {
-    const response = await fetch(DATA_URL);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const payload = await response.json();
+    let payload = window.CHAGEE_DATA;
+    if (!payload) {
+      const response = await fetch(DATA_URL);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      payload = await response.json();
+    }
     state.records = payload.records;
 
     fillSelect(elements.category, uniqueValues("category"));
@@ -305,7 +308,7 @@ async function init() {
     elements.updated.textContent = "数据加载失败";
     elements.results.innerHTML = `
       <tr><td class="empty-cell" colspan="9">
-        无法读取数据。请刷新页面，或从 GitHub Pages / 本地网页服务器访问。
+        暂时无法载入数据。请刷新页面；若问题持续，请在 GitHub 提交 Issue。
       </td></tr>
     `;
   }
